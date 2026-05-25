@@ -20,6 +20,8 @@ const props = defineProps({
 const panoramasStore = usePanoramasStore()
 const mapStore = useMapStore()
 
+panoramasStore.getPanoramas()
+
 let vectorLayer = null
 const thumbCache = new Map()
 let renderTimeout = null

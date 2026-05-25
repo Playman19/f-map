@@ -7,8 +7,8 @@ import App from './App.vue'
 // Создаём и экспортируем pinia
 export const pinia = createPinia()
 
-// import './main.ce.js'
+import './main.ce.js'
 
 const app = createApp(App)
 app.use(pinia)
-// app.mount('#app')
+app.mount('#app')
