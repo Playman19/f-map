@@ -138,6 +138,7 @@ const handleClick = (evt) => {
 }
 
 onMounted(() => {
+  if (!props.map) return
   createLayer()
   createTooltip()
   renderPoints()

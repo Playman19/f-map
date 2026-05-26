@@ -23,6 +23,7 @@ let vectorLayer = null
 let currentFeature = null
 
 const createLayer = () => {
+  if (!props.map) return
   vectorLayer = new VectorLayer({
     source: new VectorSource(),
     zIndex: 100

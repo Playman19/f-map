@@ -28,6 +28,7 @@ let selectedFeature = null     // выбранная точка
 let tooltipOverlay = null
 
 const createLayer = () => {
+  if (!props.map) return
   vectorLayer = new VectorLayer({
     source: new VectorSource(),
     zIndex: 100
@@ -128,6 +129,7 @@ const handleClick = (evt) => {
 }
 
 onMounted(() => {
+  if (!props.map) return
   createLayer()
   createTooltip()
 

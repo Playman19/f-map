@@ -94,11 +94,12 @@ const renderThread = () => {
   if (feature) {
     vectorLayer.getSource().addFeature(feature)
     updateTooltip()
-    mapStore.flyTo(props.threadCoord[0], props.threadCoord[1], 15)
+    mapStore.flyTo(props.threadCoord[0], props.threadCoord[1], 9)
   }
 }
 
 onMounted(() => {
+  if (!props.map) return
   createLayer()
   createTooltip()
   renderThread()

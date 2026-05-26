@@ -324,6 +324,7 @@ const handleClick = (evt) => {
 
 // ==================== Lifecycle ====================
 onMounted(() => {
+  if (!props.map) return
   createLayer()
   renderPanoramas()
 
