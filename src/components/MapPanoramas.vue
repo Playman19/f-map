@@ -20,8 +20,6 @@ const props = defineProps({
 const panoramasStore = usePanoramasStore()
 const mapStore = useMapStore()
 
-panoramasStore.getPanoramas()
-
 let vectorLayer = null
 const thumbCache = new Map()
 let renderTimeout = null
@@ -84,7 +82,8 @@ const createCircularThumb = async (url, size) => {
 
 // ==================== Feature Creation ====================
 const createFeature = async (item, size, parts) => {
-  const circularSrc = await createCircularThumb(`${ICONS_BASE_URL}${item.thumb_path}`, size.iconSize)
+  console.log(item)
+  const circularSrc = await createCircularThumb(`${item.images.thumb.url}`, size.iconSize)
 
   const feature = new Feature({
     geometry: new Point(item.coords),
@@ -181,7 +180,7 @@ const updateStylesForZoom = () => {
   // Обновляем стили существующих фич без пересоздания
   features.forEach(async (feature) => {
     const item = feature.get('data')
-    const circularSrc = await createCircularThumb(`${ICONS_BASE_URL}${item.thumb_path}`, size.iconSize)
+    const circularSrc = await createCircularThumb(`${item.images.thumb.url}`, size.iconSize)
     
     const styles = []
     

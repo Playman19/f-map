@@ -1,9 +1,9 @@
 <template>
   <div ref="mapRoot" class="map-container">
-    <MapToolbar v-if="mapStore.isReady" class="map-toolbar" />
+    <MapToolbar v-if="mapStore.isReady" :auth="auth" class="map-toolbar" />
     <UserLocationMarker v-if="mapStore.isReady" :map="map" />
-    <MapPanoramas v-if="mapStore.isReady && mapStore.isLayerVisible('panoramas')" :map="map" />
-    <MapSectionThreads v-if="mapStore.isReady && mapStore.isLayerVisible('sectionThreads') && threadsSlug" :map="map" />
+    <MapPanoramas v-if="mapStore.isReady && mapStore.isLayerVisible('panoramas') && ps.loadingStatus === 'success'" :map="map" />
+    <MapSectionThreads v-if="mapStore.isReady && mapStore.isLayerVisible('sectionThreads') && threadsSlug && sp.isReq" :map="map" />
     <MapPaymentThreads v-if="mapStore.isReady && mapStore.isLayerVisible('paymentThreads')" :map="map" />
     
     <!-- Новый слой для threadCoord -->
@@ -46,6 +46,7 @@ import { useMapStore } from '../stores/mapStore'
 import { useUserLocation } from '../stores/useUserLocation'
 import { useNominatimStore } from '../stores/nominatim'
 import { useSectionPoints } from '../stores/useSectionPoints'
+import { usePanoramasStore } from '../stores/usePanoramasStore'
 
 import MapToolbar from './MapToolbar.vue'
 import UserLocationMarker from './UserLocationMarker.vue'
@@ -69,6 +70,14 @@ const props = defineProps({
   threadsSlug: {
     type: String,
     default: false
+  },
+  auth: {
+    type: Boolean,
+    default: false
+  },
+  flyTo: {
+    type: Array,
+    default: null
   }
 })
 
@@ -77,7 +86,8 @@ const props = defineProps({
 const emit = defineEmits([
   'map-ready',
   'location-selected',
-  'geo-data-selected'
+  'geo-data-selected',
+  'slug-counted'
 ])
 
 // ==================== Reactive data ====================
@@ -89,10 +99,29 @@ const mapStore = useMapStore()
 const userLocationStore = useUserLocation()
 const nominatim = useNominatimStore()
 const sp = useSectionPoints()
+const ps = usePanoramasStore()
 
 if(props.threadsSlug) {
   sp.setSlug(props.threadsSlug)
 }
+if(props.flyTo) {
+  mapStore.flyTo(props.flyTo[0], props.flyTo[1], 18)
+}
+
+function showSlugThreadsFlag(l) {
+  emit('slug-counted', l)
+}
+watch(()  => sp.points, () => {
+  if(sp.points.length) {
+    showSlugThreadsFlag(sp.points.length)
+  }
+})
+
+function resetNominatim() {
+  nominatim.reset()
+}
+
+ps.getPanoramas()
 
 const mapRoot = ref(null)
 let map = null
@@ -117,6 +146,7 @@ watch(() => nominatim.geoData, () => {
 // ==================== Map Initialization ====================
 onMounted(() => {
   useGeographic()
+  resetNominatim()
 
   if (!mapRoot.value) return
 

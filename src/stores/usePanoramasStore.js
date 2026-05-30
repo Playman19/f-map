@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import axios from 'axios'
 
 export const usePanoramasStore = defineStore('panoramas', () => {
+  const loadingStatus = ref('empty')
 
   // id: 8,
   // coords: [34.203231, 53.215805],
@@ -15,17 +16,20 @@ export const usePanoramasStore = defineStore('panoramas', () => {
   const items = ref([])
 
   const getPanoramas = async () => {
+    loadingStatus.value = 'loading'
     try {
       const response = await axios.get(`${API_URL}/panoramas/all`)
-      items.value = response.data
+      items.value = response.data.data
     }
     catch (e) {
       console.log(e)
     }
+    loadingStatus.value = 'success'
   }
 
   return {
     items,
-    getPanoramas
+    getPanoramas,
+    loadingStatus
   }
 })

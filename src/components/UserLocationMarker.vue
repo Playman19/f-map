@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { watch, onUnmounted } from 'vue'
+import { watch, onUnmounted, onMounted } from 'vue'
 import { useMapStore } from '../stores/mapStore'
 import { useUserLocation } from '../stores/useUserLocation'
 import Feature from 'ol/Feature'
@@ -56,7 +56,10 @@ const updateMarker = () => {
 }
 
 // Создаём слой при монтировании
-createLayer()
+onMounted(() => {
+  if (!props.map) return
+  createLayer()
+})
 
 // Следим за позицией
 watch(() => userLocationStore.position, updateMarker, { immediate: true })

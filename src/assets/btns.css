@@ -20,3 +20,6 @@
   cursor: pointer;
   transition: all .2s ease-in-out;
 }
+.map-menu-btn {
+  padding-inline: 1px !important;
+}

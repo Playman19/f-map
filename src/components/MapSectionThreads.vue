@@ -14,6 +14,8 @@ import { Vector as VectorSource } from 'ol/source'
 import { Style, Icon, Circle, Fill, Stroke, Text } from 'ol/style'
 import Overlay from 'ol/Overlay'
 
+const emit = defineEmits(['slug-counted'])
+
 const props = defineProps({
   map: { type: Object, required: true }
 })
@@ -142,6 +144,7 @@ onMounted(() => {
   createLayer()
   createTooltip()
   renderPoints()
+  // mapStore.flyTo(sectionStore.points[0].coords[0], sectionStore.points[0].coords[1], 13)
 
   // Cursor pointer
   props.map.on('pointermove', (evt) => {

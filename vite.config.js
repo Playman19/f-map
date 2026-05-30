@@ -19,6 +19,7 @@ export default defineConfig(({ mode }) => {
       API_URL: JSON.stringify(env.VITE_API_BASE_URL),
       THREAD_LINK: JSON.stringify(env.VITE_THREAD_BASE_LINK),
       ICONS_BASE_URL: JSON.stringify(env.VITE_ICONS_BASE_URL),
+      CREATE_PANORAMA_URL: JSON.stringify(env.VITE_FRONTEND_ADD_PANORAMA_URL),
     },
 
     build: {

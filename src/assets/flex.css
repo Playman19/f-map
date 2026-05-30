@@ -7,3 +7,6 @@
 .aic {
   align-items: center;
 }
+.sb {
+  justify-content: space-between;
+}

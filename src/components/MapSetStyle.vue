@@ -4,7 +4,7 @@
       class="map-btn"
       @click="toggleDropdown"
     >
-      <Icon icon="lucide:layers" width="24" height="24" color="#F9F9F9" />
+      <Icon icon="lucide:layers" width="16" height="16" color="#F9F9F9" />
     </button>
 
     <div v-if="isOpen" ref="ddRef" class="style-dropdown" >
