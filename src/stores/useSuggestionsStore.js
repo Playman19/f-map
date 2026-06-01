@@ -28,7 +28,6 @@ export const useSuggestionsStore = defineStore('suggestions', () => {
     }
 
     function setChangedLocation(d) {
-        console.log(d)
         changedLocation.value = d
     }
 
