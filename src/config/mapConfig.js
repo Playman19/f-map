@@ -83,9 +83,9 @@ export const mapConfig = {
           zoomFrom: 8,
           zoomTo: 9,
 
-          outerRadius: 16,
-          innerRadius: 12,
-          iconSize: 24,
+          outerRadius: 10,
+          innerRadius: 7,
+          iconSize: 16,
           iconScale: 1,
 
           labelFontSize: 13,
@@ -102,9 +102,9 @@ export const mapConfig = {
           zoomFrom: 10,
           zoomTo: 14,
 
-          outerRadius: 24,
-          innerRadius: 20,
-          iconSize: 32,
+          outerRadius: 17,
+          innerRadius: 14,
+          iconSize: 27,
           iconScale: 1,
 
           labelFontSize: 13,
@@ -171,9 +171,9 @@ export const mapConfig = {
         {
           zoomFrom: 10,
           zoomTo: 14,
-          outerRadius: 14,
-          innerRadius: 12,
-          iconScale: 0.55,
+          outerRadius: 12,
+          innerRadius: 10,
+          iconScale: 0.4,
           tooltipFontSize: 13,
           tooltipPadding: [8, 12]
         },
@@ -217,10 +217,10 @@ export const mapConfig = {
         {
           zoomFrom: 10,
           zoomTo: 14,
-          outerRadius: 16,
-          innerRadius: 14,
-          iconScale: 0.55,
-          labelFontSize: 11,
+          outerRadius: 12,
+          innerRadius: 10,
+          iconScale: 0.4,
+          labelFontSize: 10,
           labelOffsetX: 0,
           labelOffsetY: 19,
           likesIconSize: 0.8,
