@@ -6,8 +6,10 @@
       <!-- :threadCoord="[33.7355, 53.2210]" -->
 
       <!-- locationSelectMode: true -->
+       <div style="overflow: hidden; width:760px; height: 320px;">
+         <ol-map-widget v-bind="testConnectDataProps" @map-ready="setMapReady" @location-selected="setLocationSelected" @geo-data-selected="setGeoDataSelected" />
+       </div>
 
-      <ol-map-widget v-bind="testConnectDataProps" @map-ready="setMapReady" @location-selected="setLocationSelected" @geo-data-selected="setGeoDataSelected" />
     </div>
   </div>
 </template>
