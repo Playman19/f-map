@@ -82,7 +82,6 @@ const createCircularThumb = async (url, size) => {
 
 // ==================== Feature Creation ====================
 const createFeature = async (item, size, parts) => {
-  console.log(item)
   const circularSrc = await createCircularThumb(`${item.images.thumb.url}`, size.iconSize)
 
   const feature = new Feature({

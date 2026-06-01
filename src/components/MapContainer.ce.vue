@@ -1,5 +1,7 @@
 <template>
   <div ref="mapRoot" class="map-container">
+    <SearchDD v-if="mapStore.isReady"/>
+    <MapSelectedSuggestion v-if="mapStore.isReady && ss.changedLocation" :map="map" />
     <MapToolbar v-if="mapStore.isReady" :auth="auth" class="map-toolbar" />
     <UserLocationMarker v-if="mapStore.isReady" :map="map" />
     <MapPanoramas v-if="mapStore.isReady && mapStore.isLayerVisible('panoramas') && ps.loadingStatus === 'success'" :map="map" />
@@ -47,6 +49,7 @@ import { useUserLocation } from '../stores/useUserLocation'
 import { useNominatimStore } from '../stores/nominatim'
 import { useSectionPoints } from '../stores/useSectionPoints'
 import { usePanoramasStore } from '../stores/usePanoramasStore'
+import { useSuggestionsStore } from '../stores/useSuggestionsStore'
 
 import MapToolbar from './MapToolbar.vue'
 import UserLocationMarker from './UserLocationMarker.vue'
@@ -56,6 +59,8 @@ import MapPaymentThreads from './MapPaymentThreads.vue'
 import MapThreadCoord from './MapThreadCoord.vue'
 import MapLocationPicker from './MapLocationPicker.vue'
 import PanoramaViewer from './PanoramaViewer.vue'
+import SearchDD from './SearchDD.vue'
+import MapSelectedSuggestion from './MapSelectedSuggestion.vue'
 
 // ==================== Props & Emits ====================
 const props = defineProps({
@@ -100,6 +105,7 @@ const userLocationStore = useUserLocation()
 const nominatim = useNominatimStore()
 const sp = useSectionPoints()
 const ps = usePanoramasStore()
+const ss = useSuggestionsStore()
 
 if(props.threadsSlug) {
   sp.setSlug(props.threadsSlug)
@@ -259,5 +265,6 @@ defineExpose({
 @import url('../assets/dropdowns.css');
 @import url('../assets/flex.css');
 @import url('../assets/default.css');
+@import url('../assets/searchDD.css');
 
 </style>
