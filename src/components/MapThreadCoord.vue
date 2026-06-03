@@ -94,7 +94,8 @@ const renderThread = () => {
   if (feature) {
     vectorLayer.getSource().addFeature(feature)
     updateTooltip()
-    mapStore.flyTo(props.threadCoord[0], props.threadCoord[1], 9)
+    setTimeout(() => { mapStore.flyTo(props.threadCoord[0], props.threadCoord[1], 9) }, 1000)
+    
   }
 }
 

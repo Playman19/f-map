@@ -20,6 +20,8 @@ export default defineConfig(({ mode }) => {
       THREAD_LINK: JSON.stringify(env.VITE_THREAD_BASE_LINK),
       ICONS_BASE_URL: JSON.stringify(env.VITE_ICONS_BASE_URL),
       CREATE_PANORAMA_URL: JSON.stringify(env.VITE_FRONTEND_ADD_PANORAMA_URL),
+      GLOBALMAP_URL: JSON.stringify(env.VITE_FRONTEND_GLOBALMAP_URL),
+      PROFILE_URL: JSON.stringify(env.VITE_PROFILE_BASE_LINK)
     },
 
     build: {

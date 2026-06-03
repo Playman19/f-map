@@ -12,7 +12,7 @@ export const useSuggestionsStore = defineStore('suggestions', () => {
         try {
             const response = await axios.get(`${API_URL}/suggestions/cities?query=${query}`)
             items.value = response.data.data
-            console.log(items.value)
+            // console.log(items.value)
             loading.value = 'success'
         }
         catch (e) {

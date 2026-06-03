@@ -3,9 +3,12 @@
     <SearchDD v-if="mapStore.isReady"/>
     <MapSelectedSuggestion v-if="mapStore.isReady && ss.changedLocation" :map="map" />
     <MapToolbar v-if="mapStore.isReady" :auth="auth" class="map-toolbar" />
+    <ResizeBtns v-if="mapStore.isReady && resizeMode" @resize="resizeMap" />
+    <MapPointsNavigation v-if="mapStore.isReady && mpn" />
+
     <UserLocationMarker v-if="mapStore.isReady" :map="map" />
     <MapPanoramas v-if="mapStore.isReady && mapStore.isLayerVisible('panoramas') && ps.loadingStatus === 'success'" :map="map" />
-    <MapSectionThreads v-if="mapStore.isReady && mapStore.isLayerVisible('sectionThreads') && threadsSlug && sp.isReq" :map="map" />
+    <MapSectionThreads v-if="mapStore.isReady && mapStore.isLayerVisible('sectionThreads') && sp.slug && sp.isReq" :map="map" />
     <MapPaymentThreads v-if="mapStore.isReady && mapStore.isLayerVisible('paymentThreads')" :map="map" />
     
     <!-- Новый слой для threadCoord -->
@@ -25,11 +28,13 @@
     />
 
     <PanoramaViewer
+      :id="mapStore.panoramaViewer.id"
       :visible="mapStore.panoramaViewer.visible"
       :image-url="mapStore.panoramaViewer.imageUrl"
       :title="mapStore.panoramaViewer.title"
       :likes-count="mapStore.panoramaViewer.likesCount"
       :coords="mapStore.panoramaViewer.coords"
+      :user="mapStore.panoramaViewer.user"
       @close="mapStore.closePanorama"
     />
   </div>
@@ -43,6 +48,7 @@ import TileLayer from 'ol/layer/Tile'
 import OSM from 'ol/source/OSM'
 import XYZ from 'ol/source/XYZ'
 import { useGeographic } from 'ol/proj'
+import { ScaleLine } from 'ol/control';
 
 import { useMapStore } from '../stores/mapStore'
 import { useUserLocation } from '../stores/useUserLocation'
@@ -61,6 +67,8 @@ import MapLocationPicker from './MapLocationPicker.vue'
 import PanoramaViewer from './PanoramaViewer.vue'
 import SearchDD from './SearchDD.vue'
 import MapSelectedSuggestion from './MapSelectedSuggestion.vue'
+import ResizeBtns from './ResizeBtns.vue'
+import MapPointsNavigation from './MapPointsNavigation.vue'
 
 // ==================== Props & Emits ====================
 const props = defineProps({
@@ -83,6 +91,18 @@ const props = defineProps({
   flyTo: {
     type: Array,
     default: null
+  },
+  resizeMode: {
+    type: Boolean,
+    default: false
+  },
+  mpn: {
+    type: Boolean,
+    default: false
+  },
+  panoramaId: {
+    type: String,
+    default: null
   }
 })
 
@@ -92,7 +112,9 @@ const emit = defineEmits([
   'map-ready',
   'location-selected',
   'geo-data-selected',
-  'slug-counted'
+  'slug-counted',
+  'resize',
+  'disable-panorama-props',
 ])
 
 // ==================== Reactive data ====================
@@ -111,8 +133,22 @@ if(props.threadsSlug) {
   sp.setSlug(props.threadsSlug)
 }
 if(props.flyTo) {
-  mapStore.flyTo(props.flyTo[0], props.flyTo[1], 18)
+  setTimeout(() => {
+    mapStore.flyTo(props.flyTo[0], props.flyTo[1], 18)
+  }, 1200)
 }
+
+if(props.panoramaId) {
+  setTimeout(() => {
+    mapStore.openPanorama({  id: props.panoramaId }, true)
+  }, 500)
+}
+
+watch(() => mapStore.panoramaStatus, () => {
+  if(mapStore.panoramaStatus === false) {
+    emit('disable-panorama-props')
+  } 
+})
 
 function showSlugThreadsFlag(l) {
   emit('slug-counted', l)
@@ -129,11 +165,16 @@ function resetNominatim() {
 
 ps.getPanoramas()
 
+function resizeMap() {
+  emit('resize')
+}
+
 const mapRoot = ref(null)
 let map = null
 
 // ==================== Watch for props ====================
 watch(() => props.threadCoord, (newVal) => {
+  if(!newVal) return
   threadCoord.value = newVal
 })
 
@@ -266,5 +307,6 @@ defineExpose({
 @import url('../assets/flex.css');
 @import url('../assets/default.css');
 @import url('../assets/searchDD.css');
+@import url('../assets/mpn.css');
 
 </style>

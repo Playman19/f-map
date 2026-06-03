@@ -27,7 +27,7 @@ function gotoAddPanorama() {
 
     <div v-if="isOpen" ref="authDDRef" class="style-dropdown" >
       <div class="style-option flex aic" @click="gotoAddPanorama">
-        <Icon icon="solar:panorama-outline" width="12" height="12" color="#F9F9F9" />
+        <Icon icon="fa6-solid:panorama" width="12" height="12" color="#F9F9F9" />
         <span class="ml4 fs10">Добавить панораму</span>
       </div>
     </div>

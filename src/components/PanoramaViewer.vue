@@ -6,24 +6,28 @@
           <button @click="close" class="close-btn">
             <Icon icon="formkit:arrowleft" width="32" />
           </button>
-          <h3>{{ title }}</h3>
+          <h3 class="ph-title">{{ title }}</h3>
         </div>
         <div class="p-right-block">
           <div class="p-coords-block" @click="copyToClipboard(`${coords[1]}, ${coords[0]}`)">
             <span>{{ coords[0] }}, {{ coords[1] }}</span>
-            <Icon v-if="!copyStatus" icon="tabler:copy-filled" width="16" />
-            <Icon v-else icon="line-md:check-all" width="16" />
+            <Icon v-if="!copyStatus" icon="tabler:copy-filled" width="16" class="p-coords-block-icon" />
+            <Icon v-else icon="line-md:check-all" width="16" class="p-coords-block-icon"  />
           </div>
           <div class="ph-likes-section">
-            <Icon icon="boxicons:like-filled" width="18" />
+            <Icon icon="boxicons:like-filled" width="18" class="ph-likes-section-icon" />
             <span>
               {{ likesCount }}
             </span>
           </div>
-          <button class="p-share-btn">
-            <Icon icon="material-symbols:share" width="24" />
+          <button class="p-share-btn" @click="copyShareLink">
+            <Icon icon="material-symbols:share" width="24" class="p-share-btn-icon" />
           </button>
         </div>
+      </div>
+      <div class="panorama-user" @click.stop="openUserPage" >
+        <img :src="user.avatar" :alt="user.nickname" width="16" height="16">
+        <div >{{ user.nickname }}</div>
       </div>
       <div ref="panoramaContainer" class="panorama-container"></div>
     </div>
@@ -42,11 +46,13 @@ const MAX_ZOOM = 200
 // ==================================================
 
 const props = defineProps({
+  id: Number,
   visible: Boolean,
   imageUrl: String,
   title: String,
   likesCount: Number,
-  coords: Array
+  coords: Array,
+  user: Object
 })
 
 const emit = defineEmits(['close'])
@@ -253,17 +259,22 @@ const copyToClipboard = async (text) => {
     console.error('Failed to copy text: ', err)
   }
 }
+
+function openUserPage() {
+  window.open(`${PROFILE_URL}/${props.user.profile_link}`, '_blank', 'noopener,noreferrer')
+}
+
+function copyShareLink() {
+  copyToClipboard(`${GLOBALMAP_URL}?panorama=${props.id}`)
+}
 </script>
 
 <style scoped>
-.panorama-overlay > * {
-  font-family: Arial, Helvetica, sans-serif;
-}
 .panorama-overlay {
   position: fixed;
   inset: 0;
   background: #000;
-  z-index: 99999;
+  z-index: 9998;
   display: flex;
   flex-direction: column;
 }
@@ -334,5 +345,54 @@ const copyToClipboard = async (text) => {
 }
 .p-coords-block > span:hover {
   color: rgb(1, 187, 1);
+}
+.panorama-user {
+  position: fixed;
+  left: 12px;
+  bottom: 8px;
+  color: white;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  background-color: rgba(0,0,0,0.4);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+.panorama-user, .panorama-user > * {
+  z-index: 9999;
+}
+.panorama-user > div {
+  margin-left: 3px;
+  cursor: pointer;
+}
+
+@media(max-width:759px) {
+  .ph-title {
+    font-size: 12px !important;
+  }
+  .p-right-block {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    width: 106px;
+  }
+  .p-coords-block {
+    flex-grow: 1;
+    margin-bottom: 3px;
+  }
+  .p-coords-block > span {
+    font-size: 9px;
+  }
+  .p-coords-block {
+    padding: 2px;
+  }
+  .p-coords-block-icon {
+    width: 10px !important;
+  }
+  .ph-likes-section-icon, .p-share-btn-icon {
+    width: 12px !important;
+  }
+  .ph-likes-section > span {
+    font-size: 10px;
+  }
 }
 </style>

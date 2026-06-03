@@ -21,6 +21,18 @@ export const usePaymentThreads = defineStore('paymentThreads', () => {
       title: "Пахлава, сухофрукты и специи от поставщика",
       likes_count: 324
     },
+    {
+      id: 4,
+      coords: [34.211004, 53.330402],
+      title: "Сплав на Орлике",
+      likes_count: 121
+    },
+    {
+      id: 5,
+      coords: [34.575691, 53.238995],
+      title: "Спа-салон, бассейн, сауна",
+      likes_count: 114
+    },
     
   ])
 

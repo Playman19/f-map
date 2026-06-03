@@ -23,3 +23,9 @@
 .map-menu-btn {
   padding-inline: 1px !important;
 }
+.map-resize-menu {
+  position: absolute;
+  right:3px;
+  bottom: 3px;
+  z-index: 100;
+}

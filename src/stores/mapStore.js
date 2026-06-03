@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, watch, onMounted } from 'vue'
+import axios from 'axios'
 
 import { mapConfig } from '../config/mapConfig'
 
@@ -149,21 +150,62 @@ const isLayerVisible = (layerName, zoomValue = zoom.value) => {
 const panoramaViewer = ref({
   visible: false,
   imageUrl: '',
-  title: ''
+  title: '',
+  likesCount: 0,
+  coords: [],
+  user: null
 })
 
-const openPanorama = (item) => {
-  panoramaViewer.value = {
-    visible: true,
-    imageUrl: item.panorama_path,
-    title: item.title || 'Панорама',
-    likesCount: item.likes_count,
-    coords: item.coords
+const panoramaStatus = ref(false)
+
+async function getPanoramaDataById(id) {
+  try {
+    const response = await axios.get(`${API_URL}/panoramas/${id}`)
+    panoramaStatus.value = true
+    return response.data.data
+  } catch (error) {
+    panoramaStatus.value = true
+    alert('Этой панорамы не существует')
+    setTimeout(() => {
+      panoramaStatus.value = false
+    }, 500)
+    console.error(error)
+  }
+}
+
+const openPanorama = async (item, param=false) => {
+  const panoramaData = await getPanoramaDataById(item.id)
+  if(!panoramaData) return
+  if(param) {
+    flyTo(panoramaData?.coords[0], panoramaData?.coords[1], 16)
+    setTimeout(() => {    
+      panoramaViewer.value = {
+        visible: true,
+        id: item.id,
+        imageUrl: panoramaData?.images.panorama.url,
+        title: panoramaData?.title || 'Панорама',
+        likesCount: panoramaData?.likes_count,
+        coords: panoramaData?.coords,
+        user: panoramaData?.author || null
+      }
+    }, 1600)
+  }
+  else {
+    panoramaViewer.value = {
+      visible: true,
+      id: item.id,
+      imageUrl: panoramaData?.images.panorama.url,
+      title: panoramaData?.title || 'Панорама',
+      likesCount: panoramaData?.likes_count,
+      coords: panoramaData?.coords,
+      user: panoramaData?.author || null
+    }
   }
 }
 
 const closePanorama = () => {
   panoramaViewer.value.visible = false
+  panoramaStatus.value = false
 }
 
   return {
@@ -188,6 +230,7 @@ const closePanorama = () => {
     isLayerVisible,
 
     panoramaViewer,
+    panoramaStatus,
     openPanorama,
     closePanorama,
   }
