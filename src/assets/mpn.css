@@ -163,6 +163,13 @@
 
   .mpn-container-active {
     bottom: 180px;
+    animation: mca .2s ease-in-out;
+  }
+
+  @keyframes mca {
+    0%{
+      bottom: 4px;
+    }
   }
 
   .mpn-items-wrapper {
